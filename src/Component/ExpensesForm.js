@@ -1,14 +1,33 @@
 import React, {useState} from "react";
+import {v4 as uuid} from "uuid"
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
-function ExpensesForm() {
+function ExpensesForm(props) {
 
     const [name, setName] = useState("")
     const [date, setDate] = useState("")
     const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("")
 
     function handleSubmit(e) {
         e.preventDefault();
+
+        if(name && date && amount) {
+            let newExpenses = {
+                name: name,
+                date: date,
+                amount: amount,
+                category: category,
+                id: uuid()
+            };
+            console.log(newExpenses);
+            //props.newExpenses(newExpenses)
+
+            setName("");
+            setDate("");
+            setAmount("")
+            setCategory("")
+        }
     }
 
   return (
@@ -18,24 +37,24 @@ function ExpensesForm() {
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridEmail">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter Name Here" />
+              <Form.Control type="text" placeholder="Enter Name Here" name="name" value={name} onChange={(e)=> setName(e.target.value)} />
             </Form.Group>
           </Row>
 
           <Form.Group className="mb-3" controlId="formGridAddress1">
             <Form.Label>Date Purchased</Form.Label>
-            <Form.Control type="date" placeholder="Date Here" />
+            <Form.Control type="date" placeholder="Date Here"  name="date" value={date} onChange={(e)=> setDate(e.target.value)} />
           </Form.Group>
 
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridCity">
               <Form.Label>Amount(GH$)</Form.Label>
-              <Form.Control type="number" placeholder="Amount Here" />
+              <Form.Control type="number" placeholder="Amount Here"  name="amount" value={amount} onChange={(e)=> setAmount(e.target.value)} />
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label>Category</Form.Label>
-              <Form.Select defaultValue="Food and Drinks">
+              <Form.Select defaultValue="Food and Drinks" value={category} onChange={(e)=> setCategory(e.target.value)} >
                 <option>Food and Drinks</option>
                 <option>Accomdation</option>
                 <option>Transportation</option>
@@ -46,7 +65,7 @@ function ExpensesForm() {
           </Row>
 
           <Button variant="primary" type="submit">
-            Submit
+            Add Expenses
           </Button>
         </Form>
       </Container>
